@@ -16,16 +16,51 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const theme = createTheme();
 
-export default function CreateEmployee() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+ class CreateEmployee extends React.Component {
+  constructor(){
+    super();
+    this.state = {
+      name:'',
+      wage:''
 
+    }
+  }
+  componentDidMount() {
+  }
+
+  fetchData = () => {
+      fetch('https://practical-jpa.herokuapp.com/api/v1/employees')
+          .then(res => res.json())
+          .then(res => {
+              
+          })
+  }
+  submitForm = () => {
+    fetch('https://practical-jpa.herokuapp.com/api/v1/employees', {
+        method: 'POST',
+        body: JSON.stringify( {
+            name: this.state.name,
+            wage: this.state.wage
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+          },
+    })
+        .then(res => res.json())
+        .then(res => {
+            console.log(res);
+        })
+}
+ handleChangeName = (ev) => {
+  this.setState({name: ev.target.value})
+
+ }
+ handleChangeWage = (ev) => {
+  this.setState({wage: ev.target.value})
+
+ }
+
+  render(){
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -41,7 +76,7 @@ export default function CreateEmployee() {
           <Typography component="h1" variant="h5">
              Create new Employee
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" noValidate sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -50,6 +85,7 @@ export default function CreateEmployee() {
                   id="name"
                   label="Name"
                   name="name"
+                  onChange={this.handleChangeName}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -58,14 +94,13 @@ export default function CreateEmployee() {
                   fullWidth
                   name="wage"
                   label="Wage"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
+                  id="wage"
+                  onChange={this.handleChangeWage}
                 />
               </Grid>
             
             </Grid>
-            <Button
+            <Button onClick={this.submitForm}
               type="submit"
               fullWidth
               variant="contained"
@@ -79,3 +114,5 @@ export default function CreateEmployee() {
     </ThemeProvider>
   );
 }
+}
+export default CreateEmployee;

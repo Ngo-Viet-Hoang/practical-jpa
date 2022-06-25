@@ -1,13 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
-import CreateEmployee from './module/Employee/CreateEmployee';
-import AirlineList from './module/Employee/EmloyeeList';
+import { Home } from './module/Home/Home';
 
 function App() {
   return (
   <>
-  {/* <CreateEmployee/> */}
-  <AirlineList/>
+  <Home/>
   </>
   );
 }
